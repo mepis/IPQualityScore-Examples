@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IPQS Malicisour URL checker</title>
+    <script>
+      async function fetchData() {
+        const apiKey = document.getElementById("apiKey").value;
+        const url = encodeURIComponent(document.getElementById("url").value);
+        const apiString =
+          "https://ipqualityscore.com/api/json/url/" + apiKey + "/" + url;
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            // Typical action to be performed when the document is ready:
+            document.getElementById("results").innerHTML = xhttp.responseText;
+          }
+        };
+        xhttp.open("GET", apiString, true);
+        xhttp.send();
+      }
+    </script>
+  </head>
+  <body>
+    <h1>IPQS API Key</h1>
+    <input type="text" id="apiKey" name="fname" /><br /><br />
+
+    <h1>URL</h1>
+    <input type="text" id="url" name="fname" /><br /><br />
+
+    <button onclick="fetchData()">Fetch Data</button>
+
+    <span id="results"> </span>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>IPQS Device Tracker Example: Inject Script Into Head</title>
+
+    <script type="text/javascript">
+      const sgid = "sgid-test";
+      const project = "project-test";
+      const source = "source-test";
+
+      inject_fingerprint_script();
+
+      var IPQ = {
+        Callback: function () {
+          console.log("Storing fingerprint data");
+          Startup.Init();
+          Startup.AfterResult(function (result) {
+            console.log("FINGERPRINT: ", result);
+            var reqID = result.request_id;
+            document.getElementsByClassName("sg-input-text")[0].value = reqID;
+          });
+          Startup.AfterFailure(function (result) {
+            console.log("ERROR: ", result);
+          });
+          Startup.Init();
+        },
+      };
+
+      function inject_fingerprint_script() {
+        console.log("Injecting Script");
+        const IPQS_DEVICE_TRACKER_KEY = "";
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://www.ipqscdn.com/api/*/${IPQS_DEVICE_TRACKER_KEY}/learn.js`;
+        document.head.appendChild(script);
+      }
+    </script>
+  </head>
+
+  <body>
+    <main>
+      <div>
+        <h1>Inject Script Example</h1>
+        <div id="fingerprint"></div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>IPQS Device Tracker Contact Form Example</title>
+
+    <!-- IPQS Device Tracker Script-->
+    <script
+      src="https://www.ipqscdn.com/api/*/IPQS_API_KEY/learn.js"
+      crossorigin="anonymous"
+    ></script>
+    <noscript
+      ><img
+        src="https://www.ipqscdn.com/api/*/IPQS_API_KEY/pixel.png"
+    /></noscript>
+
+    <script type="text/javascript">
+      var IPQ = {
+        Callback: function () {
+          Startup.Pause();
+
+          // #######################################
+          // Log fingerprint to console after completion
+          // #######################################
+
+          Startup.AfterResult(function (result) {
+            console.log("Fingerprint: ", result);
+          });
+          Startup.Init();
+        },
+      };
+
+      function submit() {
+        // #######################################
+        // Capture email and phone from contact form, add it to device fingerprint, complete fingerprint
+        // #######################################
+        const EMAIL_ADDRESS = document.getElementById("email_address").value;
+        const PHONE = document.getElementById("phone").value;
+        Startup.Store("email", EMAIL_ADDRESS);
+        Startup.Store("phone", PHONE);
+        Startup.Resume();
+
+        // #######################################
+        // Logs contact form data to console for reference
+        // ---------
+        // Remove the statements below in a production environment
+        // #######################################
+        const FORM_DATA = document.getElementById("contact_form").elements;
+        for (entry in FORM_DATA) {
+          console.log(`${FORM_DATA[entry].name}: ${FORM_DATA[entry].value}`);
+        }
+
+        // #######################################
+        // Add instructions below for sending the form data to
+        // your backend services.
+        // #######################################
+        //
+        // Do Stuff here
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>Contact Form</h1>
+      <div class="container">
+        <form method="POST" action="javascript:submit()" id="contact_form">
+          <label for="email_address">Email Address</label>
+          <input
+            type="text"
+            id="email_address"
+            name="email_address"
+            placeholder="example@test.com"
+          />
+
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="717-723-1830"
+          />
+          <label for="subject">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            placeholder="What are your thoughts?"
+            style="height: 200px"
+          ></textarea>
+
+          <button>Send</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
